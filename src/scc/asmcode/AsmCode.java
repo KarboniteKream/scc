@@ -208,29 +208,30 @@ public class AsmCode
 		else if(expression instanceof ImcCALL == true)
 		{
 			ImcCALL call = (ImcCALL)expression;
-			LinkedList<FrmTemp> stackPtr = new LinkedList<FrmTemp>(Arrays.asList(new FrmTemp()));
+			LinkedList<FrmTemp> stackPtr = new LinkedList<>(Arrays.asList(new FrmTemp()));
 			// kadar delamo s FP in SP, uporabimo +; popravi se drugje
-			chunk.asmcode.add(new AsmOPER("+LD`d0", "`s0", stackPtr, new LinkedList<FrmTemp>(Arrays.asList(chunk.frame.SP))));
+			chunk.asmcode.add(new AsmOPER("+LD`d0", "`s0", stackPtr, new LinkedList<>(Arrays.asList(chunk.frame.SP))));
 			// pravilna velikost!
 			FrmTemp size = new FrmTemp();
-			chunk.asmcode.add(new AsmOPER("LD`d0", "#" + call.args.size() * 3, new LinkedList<FrmTemp>(Arrays.asList(size)), null));
-			chunk.asmcode.add(new AsmOPER("ADDR", "`s0,`d0", stackPtr, new LinkedList<FrmTemp>(Arrays.asList(size))));
+			chunk.asmcode.add(new AsmOPER("LD`d0", "#" + call.args.size() * 3, new LinkedList<>(Arrays.asList(size)), null));
+			chunk.asmcode.add(new AsmOPER("ADDR", "`s0,`d0", stackPtr, new LinkedList<>(Arrays.asList(size))));
 
 			// kako je z argumenti razlicnih velikosti?
 			for(int i = call.args.size() - 1; i >= 0; i--)
 			{
-				LinkedList<FrmTemp> argSize = new LinkedList<FrmTemp>(Arrays.asList(new FrmTemp()));
-				// popravi velikost
+				LinkedList<FrmTemp> argSize = new LinkedList<>(Arrays.asList(new FrmTemp()));
 				chunk.asmcode.add(new AsmOPER("LD`d0", "#" + 3, argSize, null));
 				chunk.asmcode.add(new AsmOPER("SUBR", "`s0,`d0", stackPtr, argSize));
 				chunk.asmcode.add(new AsmOPER("ST`s0", "ADDR", null, stackPtr));
-				chunk.asmcode.add(new AsmOPER("ST`s0", "@ADDR", null, new LinkedList<FrmTemp>(Arrays.asList(((ImcTEMP)call.args.get(i)).temp))));
+				chunk.asmcode.add(new AsmOPER("ST`s0", "@ADDR", null, new LinkedList<>(Arrays.asList(((ImcTEMP)call.args.get(i)).temp))));
 			}
 
 			// remove defs; trenutno potrebujemo, ker drugace dobim nullptrex, verjetno, ker imamo kaksen move, kjer je funcall
 			defs.add(temp = new FrmTemp());
 			labels.add(call.label);
+			chunk.asmcode.add(new AsmOPER("STL", "LR"));
 			chunk.asmcode.add(new AsmOPER("JSUB", "`l0", defs, null, labels));
+			chunk.asmcode.add(new AsmOPER("LDL", "LR"));
 			// premakni iz pomnilnika v temp
 		}
 		else if(expression instanceof ImcESEQ == true)

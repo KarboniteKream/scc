@@ -15,6 +15,7 @@ public class AbsAtomConst extends AbsExpr {
 	public static final int STR = 2;
 	public static final int FLOAT = 3;
 	public static final int CHAR = 4;
+	public static final int VOID = 5;
 
 	/** Tip. */
 	public final int type;

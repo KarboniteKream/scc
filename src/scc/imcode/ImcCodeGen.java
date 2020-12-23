@@ -35,9 +35,8 @@ public class ImcCodeGen implements Visitor
 		}
 		else if(acceptor.type == AbsAtomConst.STR)
 		{
-			// TODO
 			FrmLabel string = FrmLabel.newLabel();
-			chunks.add(new ImcDataChunk(string, ImcDataChunk.BYTE, null, "\"" + acceptor.value.substring(1, acceptor.value.length() - 1) + "\",0"));
+			chunks.add(new ImcDataChunk(string, ImcDataChunk.BYTE, "C'" + acceptor.value.substring(1, acceptor.value.length() - 1) + "'"));
 			imcode.put(acceptor, new ImcNAME(string));
 		}
 		else if(acceptor.type == AbsAtomConst.FLOAT)
@@ -348,7 +347,7 @@ public class ImcCodeGen implements Visitor
 		if(frame == null)
 		{
 			// datachunk mora vsebovati kodo na zacetku programa ki inicializira spremenljivko
-			chunks.add(new ImcDataChunk(((FrmVarAccess)FrmDesc.getAccess(acceptor)).label, SymbDesc.getType(acceptor).size()));
+			chunks.add(new ImcDataChunk(((FrmVarAccess)FrmDesc.getAccess(acceptor)).label, SymbDesc.getType(acceptor).size(), 1));
 			FrmAccess acc = FrmDesc.getAccess(acceptor);
 			// TODO expr, add to datachunk
 			System.out.print(acc.getClass().getName());

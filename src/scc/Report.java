@@ -117,8 +117,8 @@ public class Report {
 	 * @param sourceFileName
 	 *            Ime datoteke z vmesnimi rezultati.
 	 */
-	public static void openDumpFile(String sourceFileName, boolean mms) {
-		String dumpFileName = sourceFileName.replaceFirst("\\.c$", "") + (mms == true ? ".mms" : ".log");
+	public static void openDumpFile(String sourceFileName, boolean asm) {
+		String dumpFileName = sourceFileName.replaceFirst("\\.c$", "") + (asm ? ".asm" : ".log");
 		try {
 			dumpFile = new PrintStream(dumpFileName);
 		} catch (FileNotFoundException __) {

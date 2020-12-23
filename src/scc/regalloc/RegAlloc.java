@@ -36,20 +36,18 @@ public class RegAlloc
 			{
 				ImcCodeChunk codeChunk = (ImcCodeChunk)chunk;
 
-				do
-				{
+				do {
 					build(codeChunk);
-					stack = new LinkedList<TmpNode>();
+					stack = new LinkedList<>();
 
-					do
-					{
+					do {
 						simplify(codeChunk);
-					} while(spill(codeChunk) == true);
-				} while(select(codeChunk) == true);
+					} while (spill(codeChunk));
+				} while (select(codeChunk));
 
-				codeChunk.registers = new HashMap<FrmTemp, String>();
+				codeChunk.registers = new HashMap<>();
 				codeChunk.registers.put(codeChunk.frame.FP, "X");
-				codeChunk.registers.put(codeChunk.frame.SP, "250");
+				codeChunk.registers.put(codeChunk.frame.SP, "SP");
 
 				for(TmpNode node : codeChunk.graph)
 				{

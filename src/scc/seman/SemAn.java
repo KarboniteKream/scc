@@ -10,7 +10,7 @@ import scc.seman.type.*;
 
 public class SemAn implements Visitor
 {
-	private boolean dump;
+	private final boolean dump;
 
 	public SemAn(boolean dump)
 	{
@@ -18,74 +18,54 @@ public class SemAn implements Visitor
 
 		Position position = new Position(0, 0);
 
-		// Vector<AbsPar> intPars = new Vector<AbsPar>();
-		// intPars.add(new AbsPar(position, "i", new AbsAtomType(position, AbsAtomType.INT)));
+		Vector<AbsPar> intPars = new Vector<>();
+		intPars.add(new AbsPar(position, "i", new AbsAtomType(position, AbsAtomType.INT)));
 
-		// Vector<AbsPar> strPars = new Vector<AbsPar>();
-		// strPars.add(new AbsPar(position, "i", new AbsAtomType(position, AbsAtomType.STR)));
+		Vector<AbsPar> charPars = new Vector<>();
+		charPars.add(new AbsPar(position, "c", new AbsAtomType(position, AbsAtomType.CHAR)));
 
-		// Vector<AbsPar> getCharAtPars = new Vector<AbsPar>();
-		// getCharAtPars.add(new AbsPar(position, "s", new AbsAtomType(position, AbsAtomType.STR)));
-		// getCharAtPars.add(new AbsPar(position, "i", new AbsAtomType(position, AbsAtomType.INT)));
+		Vector<AbsPar> voidPars = new Vector<>();
 
-		// Vector<AbsPar> putCharAtPars = new Vector<AbsPar>();
-		// putCharAtPars.add(new AbsPar(position, "s", new AbsAtomType(position, AbsAtomType.STR)));
-		// putCharAtPars.add(new AbsPar(position, "c", new AbsAtomType(position, AbsAtomType.INT)));
-		// putCharAtPars.add(new AbsPar(position, "i", new AbsAtomType(position, AbsAtomType.INT)));
+		Vector<SemType> intParTypes = new Vector<>();
+		intParTypes.add(new SemAtomType(SemAtomType.INT));
 
-		// Vector<SemType> intParTypes = new Vector<SemType>();
-		// intParTypes.add(new SemAtomType(SemAtomType.INT));
+		Vector<SemType> charParTypes = new Vector<>();
+		charParTypes.add(new SemAtomType(SemAtomType.CHAR));
 
-		// Vector<SemType> strParTypes = new Vector<SemType>();
-		// strParTypes.add(new SemAtomType(SemAtomType.STR));
+		Vector<SemType> voidParTypes = new Vector<>();
 
-		// Vector<SemType> getCharAtParTypes = new Vector<SemType>();
-		// getCharAtParTypes.add(new SemAtomType(SemAtomType.STR));
-		// getCharAtParTypes.add(new SemAtomType(SemAtomType.INT));
+		AbsAtomConst intConst = new AbsAtomConst(position, AbsAtomConst.INT, "0");
+		AbsAtomConst charConst = new AbsAtomConst(position, AbsAtomConst.CHAR, "\0");
+		AbsAtomConst voidConst = new AbsAtomConst(position, AbsAtomConst.VOID, "");
 
-		// Vector<SemType> putCharAtParTypes = new Vector<SemType>();
-		// putCharAtParTypes.add(new SemAtomType(SemAtomType.STR));
-		// putCharAtParTypes.add(new SemAtomType(SemAtomType.INT));
-		// putCharAtParTypes.add(new SemAtomType(SemAtomType.INT));
+		AbsAtomType intType = new AbsAtomType(position, AbsAtomType.INT);
+		AbsAtomType charType = new AbsAtomType(position, AbsAtomType.CHAR);
+		AbsAtomType voidType = new AbsAtomType(position, AbsAtomType.VOID);
 
-		// AbsAtomConst intConst = new AbsAtomConst(position, AbsAtomConst.INT, "0");
-		// AbsAtomConst strConst = new AbsAtomConst(position, AbsAtomConst.STR, "");
+		AbsFunDef get_int = new AbsFunDef(position, "get_int", voidPars, intType, intConst);
+		AbsFunDef get_char = new AbsFunDef(position, "get_char", voidPars, charType, charConst);
+		AbsFunDef put_int = new AbsFunDef(position, "put_int", intPars, voidType, voidConst);
+		AbsFunDef put_char = new AbsFunDef(position, "put_char", charPars, voidType, voidConst);
+		AbsFunDef put_nl = new AbsFunDef(position, "put_nl", voidPars, voidType, voidConst);
 
-		// AbsAtomType intType = new AbsAtomType(position, AbsAtomType.INT);
-		// AbsAtomType strType = new AbsAtomType(position, AbsAtomType.STR);
+		try {
+			SymbTable.ins(get_int.name, get_int);
+			SymbDesc.setType(get_int, new SemFunType(voidParTypes, new SemAtomType(SemAtomType.INT)));
 
-		// AbsFunDef get_int = new AbsFunDef(position, "get_int", intPars, intType, intConst);
-		// AbsFunDef put_int = new AbsFunDef(position, "put_int", intPars, intType, intConst);
-		// AbsFunDef put_nl = new AbsFunDef(position, "put_nl", intPars, intType, intConst);
-		// AbsFunDef get_str = new AbsFunDef(position, "get_str", strPars, strType, strConst);
-		// AbsFunDef put_str = new AbsFunDef(position, "put_str", strPars, intType, intConst);
-		// AbsFunDef get_char_at = new AbsFunDef(position, "get_char_at", getCharAtPars, intType, intConst);
-		// AbsFunDef put_char_at = new AbsFunDef(position, "put_char_at", putCharAtPars, strType, strConst);
+			SymbTable.ins(get_char.name, get_char);
+			SymbDesc.setType(get_char, new SemFunType(voidParTypes, new SemAtomType(SemAtomType.CHAR)));
 
-		// SemFunType intFun = new SemFunType(intParTypes, new SemAtomType(SemAtomType.INT));
+			SymbTable.ins(put_int.name, put_int);
+			SymbDesc.setType(put_int, new SemFunType(intParTypes, new SemAtomType(SemAtomType.VOID)));
 
-		// try
-		// {
-		// 	SymbTable.ins(get_int.name, get_int);
-		// 	SymbTable.ins(put_int.name, put_int);
-		// 	SymbTable.ins(put_nl.name, put_nl);
-		// 	SymbTable.ins(get_str.name, get_str);
-		// 	SymbTable.ins(put_str.name, put_str);
-		// 	SymbTable.ins(get_char_at.name, get_char_at);
-		// 	SymbTable.ins(put_char_at.name, put_char_at);
+			SymbTable.ins(put_char.name, put_char);
+			SymbDesc.setType(put_char, new SemFunType(charParTypes, new SemAtomType(SemAtomType.VOID)));
 
-		// 	SymbDesc.setType(get_int, intFun);
-		// 	SymbDesc.setType(put_int, intFun);
-		// 	SymbDesc.setType(put_nl, intFun);
-		// 	SymbDesc.setType(get_str, new SemFunType(strParTypes, new SemAtomType(SemAtomType.STR)));
-		// 	SymbDesc.setType(put_str, new SemFunType(strParTypes, new SemAtomType(SemAtomType.INT)));
-		// 	SymbDesc.setType(get_char_at, new SemFunType(getCharAtParTypes, new SemAtomType(SemAtomType.INT)));
-		// 	SymbDesc.setType(put_char_at, new SemFunType(putCharAtParTypes, new SemAtomType(SemAtomType.STR)));
-		// }
-		// catch(SemIllegalInsertException __)
-		// {
-		// 	Report.error("Internal error. Unable to add built-in functions to the symbol table.");
-		// }
+			SymbTable.ins(put_nl.name, put_nl);
+			SymbDesc.setType(put_nl, new SemFunType(voidParTypes, new SemAtomType(SemAtomType.VOID)));
+		} catch (SemIllegalInsertException e) {
+			Report.error("Internal error. Unable to add built-in functions to the symbol table.");
+		}
 	}
 
 	public void dump(AbsTree tree)

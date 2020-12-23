@@ -14,21 +14,20 @@ public class Frames implements Visitor
 	{
 		this.dump = dump;
 
-		// AbsFunDef get_int = (AbsFunDef)SymbTable.fnd("get_int");
-		// AbsFunDef put_int = (AbsFunDef)SymbTable.fnd("put_int");
-		// AbsFunDef put_nl = (AbsFunDef)SymbTable.fnd("put_nl");
-		// AbsFunDef get_str = (AbsFunDef)SymbTable.fnd("get_str");
-		// AbsFunDef put_str = (AbsFunDef)SymbTable.fnd("put_str");
-		// AbsFunDef get_char_at = (AbsFunDef)SymbTable.fnd("get_char_at");
-		// AbsFunDef put_char_at = (AbsFunDef)SymbTable.fnd("put_char_at");
+		AbsFunDef get_int = (AbsFunDef) SymbTable.fnd("get_int");
+		FrmDesc.setFrame(get_int, new FrmFrame(get_int));
 
-		// FrmDesc.setFrame(get_int, new FrmFrame(get_int, 1));
-		// FrmDesc.setFrame(put_int, new FrmFrame(put_int, 1));
-		// FrmDesc.setFrame(put_nl, new FrmFrame(put_nl, 1));
-		// FrmDesc.setFrame(get_str, new FrmFrame(get_str, 1));
-		// FrmDesc.setFrame(put_str, new FrmFrame(put_str, 1));
-		// FrmDesc.setFrame(get_char_at, new FrmFrame(get_char_at, 1));
-		// FrmDesc.setFrame(put_char_at, new FrmFrame(put_char_at, 1));
+		AbsFunDef get_char = (AbsFunDef) SymbTable.fnd("get_char");
+		FrmDesc.setFrame(get_char, new FrmFrame(get_char));
+
+		AbsFunDef put_int = (AbsFunDef) SymbTable.fnd("put_int");
+		FrmDesc.setFrame(put_int, new FrmFrame(put_int));
+
+		AbsFunDef put_char = (AbsFunDef) SymbTable.fnd("put_char");
+		FrmDesc.setFrame(put_char, new FrmFrame(put_char));
+
+		AbsFunDef put_nl = (AbsFunDef) SymbTable.fnd("put_nl");
+		FrmDesc.setFrame(put_nl, new FrmFrame(put_nl));
 	}
 
 	public void dump(AbsTree tree)
